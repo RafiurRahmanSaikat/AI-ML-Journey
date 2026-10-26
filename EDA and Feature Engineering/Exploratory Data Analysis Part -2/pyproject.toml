@@ -1,0 +1,8 @@
+[project]
+name = "exploratory-data-analysis-part-2"
+version = "0.1.0"
+requires-python = ">=3.11,<3.14"
+dependencies = [
+    "fg-data-profiling>=4.19.1",
+    "setuptools<82",
+]

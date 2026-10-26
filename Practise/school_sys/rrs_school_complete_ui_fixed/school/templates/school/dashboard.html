@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" /><title>RRS High School H20</title><link rel="stylesheet" href="{% static 'school/app.css' %}" />
+  </head>
+  <body>
+    <div id="login-screen" class="login-wrap">
+      <form id="login-form" class="login-card">
+        <div class="brand">RRS</div>
+        <p class="eyebrow">SCHOOL MANAGEMENT SYSTEM</p><h1>Welcome back</h1><p class="muted">Sign in to manage school records, exams and results.</p><label>Username<input name="username" required autocomplete="username" placeholder="admin" /></label><label>Password<input name="password" type="password" required autocomplete="current-password" placeholder="••••••••" /></label><button class="primary full">Sign in</button><p id="login-error" class="error"></p>
+        <p class="hint">
+          Demo: <b>admin / admin123</b> after running seed_data.
+        </p>
+      </form>
+    </div>
+    <div id="app" class="app hidden">
+      <aside class="sidebar">
+        <div class="side-brand">
+          <div class="brand mini">RRS</div>
+          <div>
+            <b>RRS High School</b><small>H20 · Cox's Bazar</small>
+          </div>
+        </div>
+        <p class="nav-label">WORKSPACE</p>
+        <nav id="navigation">
+          <button data-page="overview" class="active">◫ Overview</button><button data-page="students">♙ Students</button><button data-page="teachers">♧ Teachers</button><button data-page="classes">▦ Classes</button><button data-page="groups">◉ Groups</button><button data-page="sections">▤ Sections</button><button data-page="subjects">▧ Subjects</button><button data-page="class-subjects">☑ Curriculum availability</button><button data-page="class-groups">◉ Class group settings</button><button data-page="exams">◷ Exams</button><button data-page="marks">✎ Marks</button><button data-page="results">▥ Results</button><button data-page="documents">▣ Documents / PDFs</button><button data-page="settings">⚙ School settings</button>
+        </nav>
+        <div class="user">
+          <span id="avatar">A</span><div>
+            <b id="user-name">Administrator</b><small id="user-role">Super Admin</small>
+          </div><button id="logout" title="Sign out">↗</button>
+        </div>
+      </aside>
+      <main class="main">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">SCHOOL MANAGEMENT</p><h1 id="page-title">Overview</h1>
+          </div>
+          <div class="top-actions">
+            <span class="dot"></span><label class="session-switcher">
+              Academic session<select id="academic-session" aria-label="Academic session">
+                <option value="2026">2026</option>
+                <option value="2025">2025</option>
+              </select>
+            </label><button id="refresh">↻</button>
+          </div>
+        </header>
+        <div id="notice" class="notice hidden"></div>
+        <section id="content"></section>
+        <footer>RRS High School H20 · School Management System</footer>
+      </main>
+    </div>
+    <script src="{% static 'school/app.js' %}"></script>
+  </body>
+</html>

@@ -1,0 +1,13 @@
+[project]
+name = "rrs-school-backend"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+    "django>=6.1.2",
+    "django-cors-headers>=4.9.0",
+    "djangorestframework>=3.18.3",
+    "openpyxl>=3.1.5",
+    "pillow>=12.3.0",
+    "qrcode>=8.2",
+    "reportlab>=5.0.1",
+]

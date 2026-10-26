@@ -1,0 +1,501 @@
+{
+  "info": {
+    "name": "SMSMS Management API",
+    "_postman_id": "e2c0c50d-6fb1-4b8e-b1b8-b6e9b9200001",
+    "description": "Local testing collection. Demo credentials are admin/headmaster password123.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://127.0.0.1:8000"
+    },
+    {
+      "key": "access_token",
+      "value": ""
+    },
+    {
+      "key": "class_id",
+      "value": "1"
+    },
+    {
+      "key": "section_id",
+      "value": "1"
+    },
+    {
+      "key": "student_id",
+      "value": "1"
+    },
+    {
+      "key": "subject_id",
+      "value": "1"
+    },
+    {
+      "key": "exam_id",
+      "value": "1"
+    },
+    {
+      "key": "exam_subject_id",
+      "value": "1"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "request": {
+        "method": "GET",
+        "url": "{{base_url}}/api/v1/health/"
+      }
+    },
+    {
+      "name": "Login admin",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const data = pm.response.json(); if (data.access) pm.collectionVariables.set('access_token', data.access);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"username\":\"admin\",\"password\":\"password123\"}"
+        },
+        "url": "{{base_url}}/api/v1/auth/token/"
+      }
+    },
+    {
+      "name": "Login headmaster",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base_url}}/api/v1/auth/token/",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"username\":\"headmaster\",\"password\":\"password123\"}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const data = pm.response.json(); if (data.access) pm.collectionVariables.set('access_token', data.access);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "List classes",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}"
+          }
+        ],
+        "url": "{{base_url}}/api/v1/classes/"
+      }
+    },
+    {
+      "name": "List sections",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}"
+          }
+        ],
+        "url": "{{base_url}}/api/v1/sections/"
+      }
+    },
+    {
+      "name": "List students",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}"
+          }
+        ],
+        "url": "{{base_url}}/api/v1/students/?page=1"
+      }
+    },
+    {
+      "name": "Create student",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"roll\":999,\"name\":\"Postman Demo Student\",\"father_name\":\"Demo Father\",\"mother_name\":\"Demo Mother\",\"school_class\":{{class_id}},\"section\":{{section_id}},\"group\":\"HUMANITIES\",\"date_of_birth\":\"2012-01-15\",\"phone\":\"01700000000\",\"address\":\"Sylhet\"}"
+        },
+        "url": "{{base_url}}/api/v1/students/"
+      }
+    },
+    {
+      "name": "Bulk create students",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"students\":[{\"roll\":998,\"name\":\"Bulk Demo One\",\"school_class\":{{class_id}},\"section\":{{section_id}},\"group\":\"HUMANITIES\"},{\"roll\":997,\"name\":\"Bulk Demo Two\",\"school_class\":{{class_id}},\"section\":{{section_id}},\"group\":\"SCIENCE\"}]}"
+        },
+        "url": "{{base_url}}/api/v1/students/bulk/"
+      }
+    },
+    {
+      "name": "Configure exam subjects",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"mode\":\"replace\",\"subjects\":[{\"subject\":{{subject_id}},\"total_marks\":100,\"cq_max\":50,\"short_max\":20,\"mcq_max\":30,\"practical_max\":0,\"pass_marks\":33,\"written_pass_marks\":23,\"mcq_pass_marks\":10,\"practical_pass_marks\":0}]}"
+        },
+        "url": "{{base_url}}/api/v1/exams/{{exam_id}}/configure-subjects/"
+      }
+    },
+    {
+      "name": "Bulk upsert results",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"results\":[{\"student\":{{student_id}},\"exam_subject\":{{exam_subject_id}},\"cq_marks\":35,\"short_marks\":12,\"mcq_marks\":24,\"practical_marks\":0}]}"
+        },
+        "url": "{{base_url}}/api/v1/results/bulk/"
+      }
+    },
+    {
+      "name": "Export students XLSX",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}"
+          }
+        ],
+        "url": "{{base_url}}/api/v1/students/export-file/?format=xlsx"
+      }
+    },
+    {
+      "name": "Export results PDF",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}"
+          }
+        ],
+        "url": "{{base_url}}/api/v1/results/export-file/?format=pdf"
+      }
+    },
+    {
+      "name": "Generate ID card PDF",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}"
+          }
+        ],
+        "url": "{{base_url}}/api/v1/students/{{student_id}}/card/?kind=ID"
+      }
+    },
+    {
+      "name": "Delete section (move students first)",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}"
+          }
+        ],
+        "url": "{{base_url}}/api/v1/sections/{{section_id}}/?move_to_section=2"
+      }
+    },
+    {
+      "name": "Create section",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base_url}}/api/v1/sections/",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"school_class\":\"{{class_id}}\",\"name\":\"C\",\"capacity\":60,\"active\":true}"
+        }
+      }
+    },
+    {
+      "name": "Create exam",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base_url}}/api/v1/exams/",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\":\"Postman Practice Exam\",\"academic_year\":2027,\"kind\":\"OTHER\",\"school_classes\":[\"{{class_id}}\"]}"
+        }
+      }
+    },
+    {
+      "name": "List subjects",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}"
+          }
+        ],
+        "url": "{{base_url}}/api/v1/subjects/"
+      }
+    },
+    {
+      "name": "List exams",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}"
+          }
+        ],
+        "url": "{{base_url}}/api/v1/exams/"
+      }
+    },
+    {
+      "name": "Get student detail",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}"
+          }
+        ],
+        "url": "{{base_url}}/api/v1/students/{{student_id}}/"
+      }
+    },
+    {
+      "name": "Update student",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base_url}}/api/v1/students/{{student_id}}/",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"phone\":\"01700000000\",\"address\":\"Updated by Postman\"}"
+        }
+      }
+    },
+    {
+      "name": "Export students CSV",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}"
+          }
+        ],
+        "url": "{{base_url}}/api/v1/students/export-file/?format=csv"
+      }
+    },
+    {
+      "name": "Export students DOCX",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}"
+          }
+        ],
+        "url": "{{base_url}}/api/v1/students/export-file/?format=docx"
+      }
+    },
+    {
+      "name": "Export students PDF",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}"
+          }
+        ],
+        "url": "{{base_url}}/api/v1/students/export-file/?format=pdf"
+      }
+    },
+    {
+      "name": "Export results XLSX",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}"
+          }
+        ],
+        "url": "{{base_url}}/api/v1/results/export-file/?format=xlsx"
+      }
+    },
+    {
+      "name": "Export results CSV",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}"
+          }
+        ],
+        "url": "{{base_url}}/api/v1/results/export-file/?format=csv"
+      }
+    },
+    {
+      "name": "Export results DOCX",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}"
+          }
+        ],
+        "url": "{{base_url}}/api/v1/results/export-file/?format=docx"
+      }
+    },
+    {
+      "name": "Generate registration card",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}"
+          }
+        ],
+        "url": "{{base_url}}/api/v1/students/{{student_id}}/card/?kind=REGISTRATION"
+      }
+    },
+    {
+      "name": "Generate transfer certificate template",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}"
+          }
+        ],
+        "url": "{{base_url}}/api/v1/students/{{student_id}}/card/?kind=TRANSFER"
+      }
+    },
+    {
+      "name": "Generate testimonial template",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}"
+          }
+        ],
+        "url": "{{base_url}}/api/v1/students/{{student_id}}/card/?kind=TESTIMONIAL"
+      }
+    }
+  ]
+}

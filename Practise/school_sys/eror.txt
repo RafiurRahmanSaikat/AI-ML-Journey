@@ -1,0 +1,101 @@
+{{base_url}}/api/class-subjects
+URL: http://127.0.0.1:8000/api/students
+Method: POST
+Status Code: 400 Bad Request{
+    "student_id": "S-PM-001",
+    "name": "Postman Student",
+    "gender": "male",
+    "school_class": "1",
+    "section": "9",
+    "academic_year": 1,
+    "roll": 99,
+    "father_name": "Father",
+    "mother_name": "Mother",
+    "guardian_phone": "01700000000"
+}{
+    "student_id": "S-PM-001",
+    "name": "Postman Student",
+    "gender": "male",
+    "school_class": "1",
+    "section": "9",
+    "academic_year": 1,
+    "roll": 99,
+    "father_name": "Father",
+    "mother_name": "Mother",
+    "guardian_phone": "01700000000"
+}URL: http://127.0.0.1:8000/api/students/null
+Method: GET
+Status Code: 404 Not Found{
+    "detail": "Not found."
+}URL: http://127.0.0.1:8000/api/students/null
+Method: PATCH
+Status Code: 404 Not Found{
+    "name": "Postman Renamed"
+}
+
+
+
+
+URL: http://127.0.0.1:8000/api/exams
+Method: POST
+Status Code: 400 Bad Request{
+    "non_field_errors": [
+        "The fields name, academic_year must make a unique set."
+    ]
+}{
+    "non_field_errors": [
+        "The fields name, academic_year must make a unique set."
+    ]
+}
+
+
+URL: http://127.0.0.1:8000/api/exams/null
+Method: PATCH
+Status Code: 404 Not Found{
+    "detail": "Not found."
+}{
+    "is_published": true
+}URL: http://127.0.0.1:8000/api/marks
+Method: POST
+Status Code: 400 Bad Request{
+    "exam": [
+        "Incorrect type. Expected pk value, received str."
+    ]
+}{
+    "exam": "null",
+    "student": "1",
+    "class_subject": "29",
+    "marks_obtained": 77
+}
+
+
+URL: http://127.0.0.1:8000/api/marks/null
+Method: PATCH
+Status Code: 404 Not Found
+{
+    "detail": "Not found."
+}{
+    "marks_obtained": 85
+}
+URL: http://127.0.0.1:8000/api/marks?exam=null&student=1
+Method: GET
+Status Code: 400 Bad Request{
+    "exam": [
+        "Select a valid choice. That choice is not one of the available choices."
+    ]
+}{}URL: http://127.0.0.1:8000/api/marks/null
+Method: DELETE
+Status Code: 404 Not Found{
+    "detail": "Not found."
+}
+
+
+URL: http://127.0.0.1:8000/api/cards/result?school_class=1&section=9&exam=1
+Method: GET
+Status Code: 404 Not Found
+
+{
+    "detail": "No matching students."
+}
+
+{}
